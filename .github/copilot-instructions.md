@@ -1,12 +1,16 @@
-# 🎯 Reglas de Operación — FadeBooker (Sistema Inteligente de Gestión)
+# Reglas de Operación — Bank Marketing Dataset
 
----
+## 🧭 Contexto del repositorio
+Este repositorio es un proyecto de análisis y preprocesamiento de datos para el dataset `Bank Marketing`. El trabajo principal está en el directorio `bank_marketing/`, con notebooks, scripts de limpieza y documentación de soporte.
 
-## 🚨 Comportamiento del Agente por Defecto (Persistente)
-**Instrucción de sesión:** Cuando el usuario interactúe con el agente por defecto, este debe asumir automáticamente el rol, jerarquía de toma de decisiones y capacidades del `@system-orchestrator`.
-- **Fase de Planificación:** Antes de escribir código o correr comandos, presenta siempre un plan técnico estructurado con impacto y riesgos.
-- **Autorización:** Solicita confirmación explícita (ej. "¿Deseas proceder? [Sí/No]") para cambios de medio o gran calado.
-- **Delegaciones Virtuales:** Simula internamente el flujo de trabajo de los agentes especialistas de Nivel 3 (como el `@dependency-pipeline-agent` para control de librerías y el `@github-git-agent` para formatear los commits).
+## 🧯 Directrices para el agente
+1. Responde en español cuando el usuario escribe en español.
+2. Prioriza `bank_marketing/notebooks/` y `bank_marketing/docs/md-fuente/` para entender el flujo del proyecto.
+3. No asumas que este repositorio contiene un backend Node/React o un pipeline empresarial: este es un proyecto de datos y notebooks.
+4. Cuando modifiques `.ipynb`, sugiere cambios en celdas específicas y evita reescribir grandes bloques sin necesidad.
+5. Mantén la trazabilidad de los datos: no mezcles `X_train` y `X_test`, y no uses estadísticas del conjunto completo para entrenar transformaciones.
+6. Si se necesitan datos procesados, usa `bank_marketing/data/processed/` y genera los archivos desde `bank_marketing/data/raw/bank-additional-full.csv`.
+7. Si una ruta de archivo es incorrecta o falta un archivo, explica claramente qué debe generarse y desde dónde.
 
 ---
 
@@ -74,63 +78,18 @@ Consulta [.github/AGENTS.md](.github/AGENTS.md) para identificar qué agente deb
 - Mantén la arquitectura hexagonal en el backend y la organización feature-based en el frontend.
 - Revisa `Documentación/md-fuente/INDICE_ENDPOINTS.md` antes de actualizar o documentar endpoints.
 
-## 🧪 Comandos útiles
-- Backend:
-  - Instalar dependencias: `cd Producto/back-fadebooker && npm install`
-  - Ejecutar local: `cd Producto/back-fadebooker && npm start`
-  - Tests: `cd Producto/back-fadebooker && npm test`
-  - Tests unitarios: `cd Producto/back-fadebooker && npm run test:unit`
-- Frontend:
-  - Instalar dependencias: `cd Producto/front-fadebooker && npm install`
-  - Ejecutar local: `cd Producto/front-fadebooker && npm run dev`
-  - Tests: `cd Producto/front-fadebooker && npm run test`
-  - Build: `cd Producto/front-fadebooker && npm run build`
+## 🧪 Repositorio de datos
+Este proyecto no contiene un backend Node/React ni integraciones de producción. Concéntrate en los notebooks y la preparación de datos en `bank_marketing/`.
 
-## 🛠 Stack Tecnológico
-- **Core**: Node.js 20, React 18, Vite.
-- **Base de Datos**: Azure SQL Server, Knex.js.
-- **Integraciones**: Mercado Pago v2, Cloudinary, Gmail (SMTP).
+## 🛠 Stack relevante
+- Python y Jupyter Notebooks para análisis y preprocesamiento.
+- `pandas`, `scikit-learn`, `matplotlib`, `seaborn` y similares en notebooks.
+- Documentación de soporte en `bank_marketing/docs/md-fuente/`.
 
-## ✅ Protocolo de Validación
-Al evaluar el estado del proyecto, verificar:
-1. Conectividad local con .env.
-2. Ejecución de tests: npm test en el backend.
-3. Sincronización de migraciones en Documentación/Documentos/Migrations/.
+## ✅ Validación recomendada
+- Revisa el notebook ejecutando las celdas después de los cambios.
+- Asegura que las rutas relativas en los notebooks sean coherentes con su ubicación en `bank_marketing/notebooks/`.
+- Confirma que los resultados transformados mantengan consistencia de filas y que no se produzcan fugas de datos.
 
-## 💻 Dominio de Programación
-Cuando el usuario pida cambios en el código:
-1. @system-orchestrator delega a @programming-orchestrator.
-2. Se coordina al especialista: @backend-agent, @frontend-agent, @database-agent, etc.
-3. Para persistir cambios, el @github-git-agent solicita confirmación del commit.
-
-### Estándares de Código
-- Tipado estricto (donde aplique) y validación con **Zod**.
-- Documentación OpenAPI (Swagger) siempre actualizada.
-- Manejo de errores centralizado y registro de logs de auditoría.
-
-### Reglas de Negocio Críticas
-- **Pagos**: No permitir agendar sin abono de retención (30-100% vía Mercado Pago).
-- **Entidades**: Usar `ServicioBarbero` para la lógica de precios y tiempos (no `ServicioTienda`).
-- **Fidelización**: 50 puntos por cada cita completada satisfactoriamente.
-- **Seguridad**: Passwords SIEMPRE hasheadas con bcrypt (validar en `UsuarioRepository`).
-
-## ⚠️ Protocolo de Herramientas Deshabilitadas
-Cuando las herramientas de edición de archivos o ejecución en terminal estén deshabilitadas o restringidas en el entorno actual del usuario, el asistente debe operar bajo las siguientes reglas estrictas:
-1. **Notificación Temprana**: El agente debe detectar la ausencia de las herramientas (como errores de ejecución de comandos por limitaciones del sandbox) y alertar al usuario al principio de su respuesta sobre esta limitación.
-2. **Propuesta de Cambios Transparentes**: En lugar de intentar ejecutar modificaciones silenciosas o delegaciones automatizadas en bucle, se deben proporcionar bloques de código completos y limpios, indicando las rutas de archivo exactas.
-3. **Instrucciones Manuales Claras**: Guiar al usuario con los comandos y pasos específicos que debe realizar por su cuenta.
-4. **Cese de Reintentos Automáticos**: Si una herramienta retorna un error de falta de permisos o no disponibilidad, no intentes volver a llamarla; pasa inmediatamente a asistencia guiada.
-
-## 🔄 Prevención de Bucles de Delegación Excesiva
-Para evitar la derivación eterna de tareas sin resolución real:
-1. **Límite de Profundidad**: Ningún flujo de trabajo puede delegarse a subagentes más de dos veces continuas sin reportar el estado intermedio al usuario.
-2. **Detección de Ciclos**: Si un subagente detecta que una sub-tarea le ha sido devuelta por otro agente para el mismo objetivo, debe detener el ciclo de inmediato, resumir el conflicto y solicitar la intervención del usuario.
-3. **Principio de Autosuficiencia**: Cada agente debe resolver la tarea directamente con la información disponible en su contexto si es técnicamente factible, en lugar de derivarla por defecto a otro rol.
-
----
-
-## 🚦 Protocolo de Planificación y Autorización Previa (Cambios de Mediano/Gran Calado)
-Ante cualquier solicitud de cambio de mediana o gran envergadura (como modificaciones de arquitectura, adición/remoción de paquetes npm, alteración de configuraciones críticas o migraciones de base de datos):
-1. **Fase de Planificación:** El agente presentará primero un informe de impacto y plan de acción estructurado.
-2. **Autorización del Usuario:** Solicitar autorización expresa antes de proceder a modificar archivos físicos o ejecutar comandos destructivos en la terminal.
-3. **Auditoría de Dependencias y Pipeline CI/CD:** El agente `@dependency-pipeline-agent` velará por mantener actualizadas las librerías sin infringir la arquitectura hexagonal en el backend y feature-based en el frontend, alertando preventivamente sobre breaking changes, emitiendo reportes rápidos y validados mediante tests antes de cambios definitivos, y ejecutando la integración continua vía Jenkins (`Jenkinsfile`).
+## 💡 Nota de proyecto
+Si ves referencias a FadeBooker, Azure SQL, Mercado Pago o_FRONTEND_ en las instrucciones, ignóralas: este repositorio es un ejercicio de preparación de datos para el dataset `Bank Marketing`.
